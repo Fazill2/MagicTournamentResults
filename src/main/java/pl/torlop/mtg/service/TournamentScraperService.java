@@ -12,9 +12,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pl.torlop.mtg.scraper.model.CardScraperModel;
-import pl.torlop.mtg.scraper.model.DeckScraperModel;
-import pl.torlop.mtg.scraper.model.TournamentScraperModel;
+import pl.torlop.mtg.model.scraper.CardScraperModel;
+import pl.torlop.mtg.model.scraper.DeckScraperModel;
+import pl.torlop.mtg.model.scraper.TournamentScraperModel;
 
 import java.io.IOException;
 import java.time.Duration;

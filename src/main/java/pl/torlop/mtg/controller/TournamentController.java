@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.torlop.mtg.scraper.model.TournamentScraperModel;
+import pl.torlop.mtg.model.scraper.TournamentScraperModel;
 import pl.torlop.mtg.service.TournamentScraperService;
 
 import java.util.List;

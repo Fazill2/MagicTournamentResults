@@ -1,4 +1,4 @@
-package pl.torlop.mtg.scraper.model;
+package pl.torlop.mtg.model.scraper;
 
 import lombok.Data;
 
