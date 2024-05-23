@@ -53,7 +53,12 @@ public class CardRepositoryService {
         if (cards.size() == 1) {
             return cards.get(0);
         } else {
-            return null;
+            List<Card> cardsContaining = cardRepository.findByNameContaining(name);
+            if (cardsContaining.size() == 1) {
+                return cardsContaining.get(0);
+            } else {
+                return null;
+            }
         }
     }
 }

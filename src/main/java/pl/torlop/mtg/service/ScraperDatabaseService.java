@@ -52,6 +52,7 @@ public class ScraperDatabaseService {
                     DeckCard deckCard = new DeckCard();
                     deckCard.setCard(cardRepositoryService.getCardByName(card.getName()));
                     deckCard.setQuantity(card.getQuantity());
+                    deckCard.setName(card.getName());
                     deckCard.setSideboard(card.getSideboard());
                     return deckCard;
                 })

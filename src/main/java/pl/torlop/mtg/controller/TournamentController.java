@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.torlop.mtg.model.scraper.TournamentScraperModel;
-import pl.torlop.mtg.service.CardUpdateService;
-import pl.torlop.mtg.service.ScraperDatabaseService;
-import pl.torlop.mtg.service.TournamentRepositoryService;
-import pl.torlop.mtg.service.TournamentScraperService;
+import pl.torlop.mtg.service.*;
 
 import java.util.List;
 
@@ -22,6 +19,7 @@ public class TournamentController {
     private final CardUpdateService cardUpdateService;
     private final ScraperDatabaseService scraperDatabaseService;
     private final TournamentRepositoryService tournamentRepositoryService;
+    private final CardRepositoryService cardRepositoryService;
 
     @GetMapping(path = "/scrapeTest")
     public List<TournamentScraperModel> scrapeTournaments() {
@@ -33,10 +31,16 @@ public class TournamentController {
     @GetMapping(path = "/clearDatabase")
     public void clearDatabase() {
         tournamentRepositoryService.clearDatabase();
+        cardRepositoryService.deleteAllCards();
     }
 
     @GetMapping(path = "/list")
     public String getCards() {
         return tournamentRepositoryService.getTournaments().toString();
+    }
+
+    @GetMapping(path = "/updateCards")
+    public void updateCards() {
+        cardUpdateService.updateCards();
     }
 }

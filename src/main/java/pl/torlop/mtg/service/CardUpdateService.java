@@ -48,7 +48,9 @@ public class CardUpdateService {
             List<CardItem> cardItems = Arrays.asList(objectMapper.readValue(url, CardItem[].class));
 
             List<Card> cardEntities = cardItems.stream()
-                    .filter(cardItem -> !Objects.equals(cardItem.getLayout(), "art_series"))
+                    .filter(cardItem -> Objects.equals(cardItem.getObject(), "card")
+                            && !cardItem.layout.equals("token") && !cardItem.layout.equals("art_series")
+                            && !cardItem.layout.equals("double_faced_token"))
                     .map(this::createCardEntityFromCardItem).toList();
 
             cardRepositoryService.saveAll(cardEntities);
