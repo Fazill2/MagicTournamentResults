@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import pl.torlop.mtg.dao.TournamentRepository;
 import pl.torlop.mtg.model.entity.Tournament;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TournamentRepositoryService {
@@ -20,5 +22,13 @@ public class TournamentRepositoryService {
 
     public void deleteTournament(Long id) {
         tournamentRepository.deleteById(id);
+    }
+
+    public List<Tournament> getTournaments() {
+        return tournamentRepository.findAll();
+    }
+
+    public void clearDatabase() {
+        tournamentRepository.deleteAll();
     }
 }
