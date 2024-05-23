@@ -47,4 +47,13 @@ public class CardRepositoryService {
     public void saveAll(List<Card> cards) {
         cardRepository.saveAll(cards);
     }
+
+    public Card getCardByName(String name) {
+        List<Card> cards = cardRepository.findByName(name);
+        if (cards.size() == 1) {
+            return cards.get(0);
+        } else {
+            return null;
+        }
+    }
 }

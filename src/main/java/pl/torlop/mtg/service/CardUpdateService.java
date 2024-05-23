@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import pl.torlop.mtg.model.api.BulkData;
-import pl.torlop.mtg.model.api.BulkDataItem;
-import pl.torlop.mtg.model.api.CardItem;
+import pl.torlop.mtg.model.scryfall_api.BulkData;
+import pl.torlop.mtg.model.scryfall_api.BulkDataItem;
+import pl.torlop.mtg.model.scryfall_api.CardItem;
 import pl.torlop.mtg.model.entity.Card;
 
 import java.net.URL;

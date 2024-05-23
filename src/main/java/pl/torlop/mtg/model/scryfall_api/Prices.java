@@ -1,4 +1,4 @@
-package pl.torlop.mtg.model.api;
+package pl.torlop.mtg.model.scryfall_api;
 
 import lombok.Data;
 

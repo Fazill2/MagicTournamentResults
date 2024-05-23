@@ -62,13 +62,13 @@ public class TournamentScraperService {
             if (linkElement == null) {
                 return null;
             }
-            String title = linkElement.selectFirst("div.decklists-details").selectFirst("h3").text();
+            String name = linkElement.selectFirst("div.decklists-details").selectFirst("h3").text();
             String date = linkElement.selectFirst("time.decklists-date").attr("datetime");
             String url = linkElement.attr("href");
             TournamentScraperModel tournament = new TournamentScraperModel();
-            tournament.setTitle(title);
+            tournament.setName(name);
             tournament.setUrl(url);
-            tournament.setDate(date);
+            tournament.setDate(date.substring(0, date.length() - 1));
             List<DeckScraperModel> decks = scrapeDecks(url);
             tournament.setDecks(decks);
             tournament.setPlayers(decks.size());
@@ -110,12 +110,13 @@ public class TournamentScraperService {
 
     public DeckScraperModel scrapeDeck(Element element) {
         try {
-            String playerAndPlace = element.selectFirst("header.decklist-header").selectFirst("p.decklist-player").text();
-            // if pattern matches
+            String playerAndPlace = element.selectFirst("header.decklist-header")
+                    .selectFirst("p.decklist-player").text();
             Integer place = null;
             Integer matchesWon = null;
             Integer matchesLost = null;
             Integer matchesDrawn = null;
+
             String resultSubstring = playerAndPlace.substring(playerAndPlace.lastIndexOf("(") + 1, playerAndPlace.lastIndexOf(")"));
             if (pattern.matcher(playerAndPlace).find()) {
                 place = Integer.parseInt(resultSubstring.replaceAll("\\D+", ""));
@@ -130,17 +131,28 @@ public class TournamentScraperService {
             }
             String player = playerAndPlace.substring(0, playerAndPlace.lastIndexOf("(")).trim();
             DeckScraperModel deck = new DeckScraperModel();
+
             Element columnListElement = element.selectFirst("div.decklist-category-columns");
+            List<CardScraperModel> cards = new ArrayList<>();
             if (columnListElement != null) {
-                List<CardScraperModel> cards = scrapeCards(columnListElement);
-                deck.setCards(cards);
+                cards.addAll(scrapeCards(columnListElement));
+
             }
+
+            Element sideboardElement = element.selectFirst("ul.decklist-sideboard");
+            if (sideboardElement != null) {
+                cards.addAll(scrapeCategory(sideboardElement, true));
+            }
+            deck.setCards(cards);
+
             deck.setDeckName("test deck name");
             deck.setPlayer(player);
             deck.setPlace(place);
+
             deck.setGamesWon(matchesWon);
             deck.setGamesLost(matchesLost);
             deck.setGamesDrawn(matchesDrawn);
+
             return deck;
         } catch (Exception e) {
             return null;
@@ -154,24 +166,21 @@ public class TournamentScraperService {
                 .filter(category -> category.className().equals("decklist-category"))
                 .forEach(category -> {
                     try {
-                        List<CardScraperModel> cardsFromCategory = scrapeCategory(category);
+                        List<CardScraperModel> cardsFromCategory = scrapeCategory(category, false);
                         cards.addAll(cardsFromCategory);
-                    } catch (Exception e) {
-                        return;
+                    } catch (Exception ignored) {
                     }
         });
         return cards;
     }
 
-    public List<CardScraperModel> scrapeCategory(Element categoryElement){
+    public List<CardScraperModel> scrapeCategory(Element categoryElement, Boolean sideboard){
         List<CardScraperModel> cards = new ArrayList<>();
         try {
-            String type = categoryElement.selectFirst("h3")
-                    .text().replaceAll("[^a-zA-z]+", "");
             List<Element> cardElements = categoryElement.select("a.decklist-card-link");
             cardElements.forEach(
                     card -> {
-                        CardScraperModel cardModel = scrapeCard(card, type);
+                        CardScraperModel cardModel = scrapeCard(card, sideboard);
                         if (cardModel != null) {
                             cards.add(cardModel);
                         }
@@ -183,17 +192,15 @@ public class TournamentScraperService {
         return cards;
     }
 
-    public CardScraperModel scrapeCard(Element cardElement, String type){
+    public CardScraperModel scrapeCard(Element cardElement, Boolean sideboard){
         try {
-            String imageUrl = cardElement.attr("data-card-image");
             String[] quantityAndName = cardElement.text().split(" ", 2);
             Integer quantity = Integer.parseInt(quantityAndName[0]);
             String name = quantityAndName[1];
             CardScraperModel card = new CardScraperModel();
             card.setName(name);
-            card.setImageUrl(imageUrl);
             card.setQuantity(quantity);
-            card.setType(type);
+            card.setSideboard(sideboard);
             return card;
         } catch (Exception e) {
             return null;

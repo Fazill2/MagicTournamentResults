@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class CardScraperModel {
     String name;
-    String imageUrl;
     Integer quantity;
-    String type;
+    Boolean sideboard;
 }

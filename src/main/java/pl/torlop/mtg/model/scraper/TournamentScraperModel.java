@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class TournamentScraperModel {
-    String title;
+    String name;
     String url;
     String date;
     Integer players;
