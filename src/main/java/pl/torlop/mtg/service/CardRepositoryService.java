@@ -1,6 +1,6 @@
 package pl.torlop.mtg.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.torlop.mtg.dao.CardRepository;
 import pl.torlop.mtg.model.entity.Card;
@@ -8,9 +8,9 @@ import pl.torlop.mtg.model.entity.Card;
 import java.util.List;
 
 @Service
-public class CardService {
-    @Autowired
-    private CardRepository cardRepository;
+@RequiredArgsConstructor
+public class CardRepositoryService {
+    private final CardRepository cardRepository;
 
     public void saveCard(Card card) {
         cardRepository.save(card);
@@ -40,4 +40,11 @@ public class CardService {
         return cardRepository.findByName(name);
     }
 
+    public List<Card> getCardsBySet(String set) {
+        return cardRepository.findBySet(set);
+    }
+
+    public void saveAll(List<Card> cards) {
+        cardRepository.saveAll(cards);
+    }
 }

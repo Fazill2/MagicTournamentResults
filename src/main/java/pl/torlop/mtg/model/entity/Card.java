@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.torlop.mtg.converter.StringListConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +12,14 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "cards")
+@Entity()
+@Table(name = "cards")
 public class Card {
     @Id
     private String id;
     private String name;
     private String imageUrl;
+    private String backImageUrl;
     private String manaCost;
     private Integer cmc;
     private String oracleText;
@@ -24,8 +27,8 @@ public class Card {
     private String set;
     private String artist;
     private String rarity;
-    @ElementCollection(targetClass = String.class)
+    @Convert(converter = StringListConverter.class)
     private List<String> colorIdentity;
-    @ElementCollection(targetClass = String.class)
-    private List<String> colors = new ArrayList<>();;
+    @Convert(converter = StringListConverter.class)
+    private List<String> colors;
 }
