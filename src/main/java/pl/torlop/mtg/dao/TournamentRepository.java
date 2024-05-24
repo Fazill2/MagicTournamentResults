@@ -10,4 +10,7 @@ import java.util.List;
 public interface TournamentRepository extends JpaRepository<Tournament, Long> {
     List<Tournament> findByFormat(String format);
     List<Tournament> findByDate(LocalDateTime date);
+    Tournament getByNameAndDate(String name, LocalDateTime date);
+    Tournament getByUrl(String url);
+    List<Tournament> findTop10ByOrderByDateDesc();
 }

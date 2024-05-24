@@ -1,5 +1,7 @@
 package pl.torlop.mtg.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,64 +20,99 @@ import pl.torlop.mtg.model.scraper.TournamentScraperModel;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class TournamentScraperService {
-    //Reading data from property file to a list
+    private final TournamentRepositoryService tournamentRepositoryService;
+
     @Value("${scraper.url}")
     private String url;
     @Value("${scraper.baseURL}")
     private String baseURL;
 
+
     private final Pattern pattern = Pattern.compile("[(].*(st|nd|rd|th).*[)]");
 
-    public List<TournamentScraperModel> scrapeTournaments() {
+    public List<TournamentScraperModel> scrapeTournaments(LocalDateTime beginDate, LocalDateTime endDate) {
         try {
             Document document = Jsoup.connect(url).get();
             Element tournamentList = document.selectFirst("ul.decklists-list");
-            // for each child element with class decklists-link and display different from none
+
             if (tournamentList == null) {
-                throw new RuntimeException("No tournament list found");
+                log.error("No tournament list found");
+                return new ArrayList<>();
             }
-            List<TournamentScraperModel> tournaments = new ArrayList<>();
-            tournamentList.children().stream()
+
+            List<Element> filteredTournaments = tournamentList.children().stream()
                     .filter(element -> element.className().equals("decklists-item"))
-                    .limit(3)
-                    .forEach(element -> {
-                        TournamentScraperModel tournament = scrapeTournament(element);
-                        if (tournament != null) {
-                            tournaments.add(tournament);
-                        }
-                    });
+                    .filter(element -> {
+                        LocalDateTime tournamentDate = getTournamentDate(element);
+                        String tournamentUrl = element.selectFirst("a.decklists-link").attr("href");
+                        return tournamentDate.isAfter(beginDate) && tournamentDate.isBefore(endDate) &&
+                                tournamentRepositoryService.getTournamentByUrl(tournamentUrl) == null;
+                    }).toList();
+
+            List<TournamentScraperModel> tournaments = new ArrayList<>();
+            for (Element element : filteredTournaments) {
+                try {
+                    int millis = 5000 + (int) (Math.random() * 2000) - 1000;
+                    Thread.sleep(millis);
+                } catch (InterruptedException ignored) {
+                }
+                TournamentScraperModel tournament = scrapeTournament(element, beginDate, endDate);
+                if (tournament != null) {
+                    tournaments.add(tournament);
+                }
+            }
+
+            log.info("Scraped {} tournaments", tournaments.size());
             return tournaments;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("Error while scraping tournaments", e);
+            return new ArrayList<>();
         }
     }
 
-    public TournamentScraperModel scrapeTournament(Element element) {
+    public TournamentScraperModel scrapeTournament(Element element, LocalDateTime beginDate, LocalDateTime endDate) {
         try {
             Element linkElement = element.selectFirst("a.decklists-link");
             if (linkElement == null) {
                 return null;
             }
-            String name = linkElement.selectFirst("div.decklists-details").selectFirst("h3").text();
-            String date = linkElement.selectFirst("time.decklists-date").attr("datetime");
+            String name = getTournamentName(element);
+            LocalDateTime dateTime = getTournamentDate(element);
+            String format = name.split(" ")[0];
             String url = linkElement.attr("href");
             TournamentScraperModel tournament = new TournamentScraperModel();
             tournament.setName(name);
             tournament.setUrl(url);
-            tournament.setDate(date.substring(0, date.length() - 1));
+            tournament.setFormat(format);
+            tournament.setDate(dateTime);
             List<DeckScraperModel> decks = scrapeDecks(url);
             tournament.setDecks(decks);
             tournament.setPlayers(decks.size());
             return tournament;
         } catch (Exception e) {
+            log.error("Error while scraping tournament", e);
             return null;
         }
+    }
+
+    public LocalDateTime getTournamentDate(Element element) {
+        Element linkElement = element.selectFirst("a.decklists-link");
+        String date = linkElement.selectFirst("time.decklists-date").attr("datetime");
+        return LocalDateTime.parse(date.substring(0, date.length() - 1));
+    }
+
+    public String getTournamentName(Element element) {
+        Element linkElement = element.selectFirst("a.decklists-link");
+        return linkElement.selectFirst("div.decklists-details").selectFirst("h3").text();
     }
 
     public List<DeckScraperModel> scrapeDecks(String url) {
@@ -116,20 +153,24 @@ public class TournamentScraperService {
             Integer matchesWon = null;
             Integer matchesLost = null;
             Integer matchesDrawn = null;
-
-            String resultSubstring = playerAndPlace.substring(playerAndPlace.lastIndexOf("(") + 1, playerAndPlace.lastIndexOf(")"));
-            if (pattern.matcher(playerAndPlace).find()) {
-                place = Integer.parseInt(resultSubstring.replaceAll("\\D+", ""));
+            String player = "";
+            if (playerAndPlace.lastIndexOf(")") == -1) {
+                player = playerAndPlace;
             } else {
-                String[] results = resultSubstring.split("-");
-                try {
-                    matchesWon = Integer.parseInt(results[0]);
-                    matchesLost =  Integer.parseInt(results[1]);
-                    matchesDrawn = Integer.parseInt(results[2]);
-                } catch (NumberFormatException | ArrayIndexOutOfBoundsException ignored) {
+                String resultSubstring = playerAndPlace.substring(playerAndPlace.lastIndexOf("(") + 1, playerAndPlace.lastIndexOf(")"));
+                if (pattern.matcher(playerAndPlace).find()) {
+                    place = Integer.parseInt(resultSubstring.replaceAll("\\D+", ""));
+                } else {
+                    String[] results = resultSubstring.split("-");
+                    try {
+                        matchesWon = Integer.parseInt(results[0]);
+                        matchesLost = Integer.parseInt(results[1]);
+                        matchesDrawn = Integer.parseInt(results[2]);
+                    } catch (NumberFormatException | ArrayIndexOutOfBoundsException ignored) {
+                    }
                 }
+                player = playerAndPlace.substring(0, playerAndPlace.lastIndexOf("(")).trim();
             }
-            String player = playerAndPlace.substring(0, playerAndPlace.lastIndexOf("(")).trim();
             DeckScraperModel deck = new DeckScraperModel();
 
             Element columnListElement = element.selectFirst("div.decklist-category-columns");
@@ -155,6 +196,7 @@ public class TournamentScraperService {
 
             return deck;
         } catch (Exception e) {
+            log.error("Error while scraping deck", e);
             return null;
         }
     }
@@ -187,6 +229,7 @@ public class TournamentScraperService {
                     }
             );
         } catch (Exception e) {
+            log.error("Error while scraping category", e);
             return cards;
         }
         return cards;
@@ -196,14 +239,20 @@ public class TournamentScraperService {
         try {
             String[] quantityAndName = cardElement.text().split(" ", 2);
             Integer quantity = Integer.parseInt(quantityAndName[0]);
-            String name = quantityAndName[1];
+            String name = getFormattedCardName(quantityAndName[1]);
+
             CardScraperModel card = new CardScraperModel();
             card.setName(name);
             card.setQuantity(quantity);
             card.setSideboard(sideboard);
             return card;
         } catch (Exception e) {
+            log.error("Error while scraping card", e);
             return null;
         }
+    }
+
+    private String getFormattedCardName(String name) {
+        return name.replace("/", " // ");
     }
 }

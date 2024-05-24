@@ -3,12 +3,14 @@ package pl.torlop.mtg.controller;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pl.torlop.mtg.model.api.TournamentApiModel;
+import pl.torlop.mtg.model.entity.Deck;
+import pl.torlop.mtg.model.entity.Tournament;
 import pl.torlop.mtg.model.scraper.TournamentScraperModel;
 import pl.torlop.mtg.service.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -20,10 +22,13 @@ public class TournamentController {
     private final ScraperDatabaseService scraperDatabaseService;
     private final TournamentRepositoryService tournamentRepositoryService;
     private final CardRepositoryService cardRepositoryService;
+    private final ApiUtilsService apiUtilsService;
 
     @GetMapping(path = "/scrapeTest")
     public List<TournamentScraperModel> scrapeTournaments() {
-        List<TournamentScraperModel> tournaments = scraperService.scrapeTournaments();
+        LocalDateTime beginDate = LocalDateTime.now().minusDays(5);
+        LocalDateTime endDate = LocalDateTime.now().plusDays(2);
+        List<TournamentScraperModel> tournaments = scraperService.scrapeTournaments(beginDate, endDate);
         tournaments.forEach(scraperDatabaseService::saveTournamentData);
         return tournaments;
     }
@@ -42,5 +47,21 @@ public class TournamentController {
     @GetMapping(path = "/updateCards")
     public void updateCards() {
         cardUpdateService.updateCards();
+    }
+
+    @GetMapping(path = "/last10")
+    public List<TournamentApiModel> getTop10Tournaments() {
+        return apiUtilsService.getTournamentApiModels(tournamentRepositoryService.getTop10Tournaments());
+    }
+
+    @GetMapping(path = "/all")
+    public List<TournamentApiModel> getAllTournaments() {
+        return apiUtilsService.getTournamentApiModels(tournamentRepositoryService.getTournaments());
+    }
+
+    @GetMapping(path = "/listDecks")
+    @ResponseBody
+    public List<Deck> getTournaments(@RequestParam Long id) {
+        return tournamentRepositoryService.getDecksFromTournament(id);
     }
 }

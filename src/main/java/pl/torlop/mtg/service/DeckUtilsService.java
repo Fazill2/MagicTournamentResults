@@ -20,4 +20,14 @@ public class DeckUtilsService {
         }
         return colors.stream().toList();
     }
+
+    public double getDeckAverageCMC(Deck deck) {
+        double sum = 0;
+        int count = 0;
+        for (DeckCard deckCard : deck.getCards()) {
+            sum += deckCard.getCard().getCmc() * deckCard.getQuantity();
+            count += deckCard.getQuantity();
+        }
+        return sum / count;
+    }
 }

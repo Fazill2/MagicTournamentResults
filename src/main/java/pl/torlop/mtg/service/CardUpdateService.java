@@ -1,6 +1,7 @@
 package pl.torlop.mtg.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@Slf4j
 public class CardUpdateService {
 
     @Value("${scryfall.bulk.url}")
@@ -51,13 +53,19 @@ public class CardUpdateService {
                     .filter(cardItem -> Objects.equals(cardItem.getObject(), "card")
                             && !cardItem.layout.equals("token") && !cardItem.layout.equals("art_series")
                             && !cardItem.layout.equals("double_faced_token")
-                                && !cardItem.set_type.equals("funny") && !cardItem.set_type.equals("memorabilia"))
+                                && isCardLegalAnywhere(cardItem) && !cardItem.set_type.equals("memorabilia"))
                     .map(this::createCardEntityFromCardItem).toList();
 
             cardRepositoryService.saveAll(cardEntities);
+            log.info("Cards updated {}", cardEntities.size());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error while updating cards", e);
         }
+    }
+
+    public Boolean isCardLegalAnywhere(CardItem card) {
+        String[] legalities = card.getLegalities().values();
+        return  Arrays.stream(legalities).anyMatch(legality -> !legality.equals("not_legal"));
     }
 
     public Card createCardEntityFromCardItem(CardItem cardItem) {

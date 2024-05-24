@@ -26,4 +26,8 @@ public class Legalities{
     public String oldschool;
     public String premodern;
     public String predh;
+
+    public String[] values(){
+        return new String[]{standard, future, historic, timeless, gladiator, pioneer, explorer, modern, legacy, pauper, vintage, penny, commander, oathbreaker, standardbrawl, brawl, alchemy, paupercommander, duel, oldschool, premodern, predh};
+    }
 }

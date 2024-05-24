@@ -24,4 +24,6 @@ public class Deck {
     private Integer gamesDrawn;
     @OneToMany(cascade = CascadeType.ALL)
     private List<DeckCard> cards;
+    private Double averageCMC;
+    private String color;
 }
