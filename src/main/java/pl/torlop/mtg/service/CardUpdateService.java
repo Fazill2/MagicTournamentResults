@@ -50,7 +50,8 @@ public class CardUpdateService {
             List<Card> cardEntities = cardItems.stream()
                     .filter(cardItem -> Objects.equals(cardItem.getObject(), "card")
                             && !cardItem.layout.equals("token") && !cardItem.layout.equals("art_series")
-                            && !cardItem.layout.equals("double_faced_token"))
+                            && !cardItem.layout.equals("double_faced_token")
+                                && !cardItem.set_type.equals("funny") && !cardItem.set_type.equals("memorabilia"))
                     .map(this::createCardEntityFromCardItem).toList();
 
             cardRepositoryService.saveAll(cardEntities);
