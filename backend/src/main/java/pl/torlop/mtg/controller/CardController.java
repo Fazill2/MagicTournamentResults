@@ -33,6 +33,11 @@ public class CardController {
         return cardStatisticsRepositoryService.getTop50CardsByFormatAndTimeScopeAndIsSideboard(format, timeScope, isSideboard);
     }
 
+    @GetMapping(path = "/updateStats")
+    public void updateStats(){
+        cardStatisticsService.generateStatistics();
+    }
+
     @GetMapping(path = "/decks")
     public List<Deck> getDecksByCardId(@RequestParam String id){
         return cardRepositoryService.getDecksByCardId(id);
