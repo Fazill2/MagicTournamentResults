@@ -7,4 +7,5 @@ public class CardScraperModel {
     String name;
     Integer quantity;
     Boolean sideboard;
+    String categoryName;
 }

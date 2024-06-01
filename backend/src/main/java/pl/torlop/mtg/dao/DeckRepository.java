@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pl.torlop.mtg.model.entity.Deck;
 import pl.torlop.mtg.model.entity.Tournament;
 
+import java.util.List;
+
 public interface DeckRepository extends JpaRepository<Deck, Long> {
-    Deck getAllByPlayer(String player);
+    List<Deck> getAllByPlayer(String player);
 }

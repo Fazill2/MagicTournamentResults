@@ -3,7 +3,6 @@ package pl.torlop.mtg.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.torlop.mtg.model.entity.Card;
 import pl.torlop.mtg.model.entity.Deck;
 import pl.torlop.mtg.model.entity.DeckCard;
 import pl.torlop.mtg.model.entity.Tournament;
@@ -16,9 +15,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ScraperDatabaseService {
+public class ScraperDataSaverService {
     private final CardRepositoryService cardRepositoryService;
     private final TournamentRepositoryService tournamentRepositoryService;
+    private final DeckUtilsService deckUtilsService;
 
     public void saveTournamentData(TournamentScraperModel tournamentScraperModel) {
         Tournament tournament = new Tournament();
@@ -46,6 +46,8 @@ public class ScraperDatabaseService {
                     deck.setGamesWon(deckScraperModel.getGamesWon());
                     deck.setPlace(deckScraperModel.getPlace());
                     deck.setCards(getDeckCardsFromDeck(deckScraperModel));
+                    deck.setColor(deckUtilsService.getDeckColorString(deck));
+                    deck.setAverageCMC(deckUtilsService.getDeckAverageCMC(deck));
                     return deck;
                 })
                 .toList();
@@ -59,6 +61,7 @@ public class ScraperDatabaseService {
                     deckCard.setQuantity(card.getQuantity());
                     deckCard.setName(card.getName());
                     deckCard.setSideboard(card.getSideboard());
+                    deckCard.setCategory(card.getCategoryName());
                     return deckCard;
                 })
                 .toList();

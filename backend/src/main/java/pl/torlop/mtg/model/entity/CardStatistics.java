@@ -9,15 +9,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity()
-@Table(name = "deck_cards")
-public class DeckCard {
+@Table(name = "card_statistics")
+public class CardStatistics {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private Integer quantity;
-    private Boolean sideboard;
-    @ManyToOne()
+    private Long count;
+    private Double average_quantity;
+    private String format;
+    private String timeScope;
+    private Boolean isSideboard;
+    @ManyToOne
     private Card card;
-    private String category;
 }

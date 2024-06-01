@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -27,4 +25,12 @@ public class Tournament {
     private String url;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Deck> decks;
+
+    public List<Deck> returnDecksWithoutCards() {
+        if (decks == null) {
+            return null;
+        }
+        decks.forEach(deck -> deck.setCards(null));
+        return decks;
+    }
 }
