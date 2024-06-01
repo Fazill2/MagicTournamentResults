@@ -1,0 +1,10 @@
+<mat-toolbar class="app-header">
+    <h1>Magic Tournaments Results</h1>
+    <button mat-button routerLink="/main-view">Home</button>
+    <button mat-button>Tournaments</button>
+    <button mat-button [matMenuTriggerFor]="menu">Cards</button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>Modern</button>
+        <button mat-menu-item>Pauper</button>
+    </mat-menu>
+ </mat-toolbar>

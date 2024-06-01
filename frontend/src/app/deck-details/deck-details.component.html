@@ -1,0 +1,30 @@
+<div class="deck-details-header">
+    <h2>{{deck.name}}</h2>
+    <p>{{deck.player}}</p>
+</div>
+<div class="deck-details-info">
+    <p>{{deck.place}}</p>
+    <ul class="deck-list">
+        <li *ngFor="let card of deck.cards" (mouseover)="showImage(card)" (mouseleave)="hideImage()" (click)="viewCardDetails(card)" class="deck-list-item">
+            <img *ngIf="hoveredCard===card" [src]="card.card.imageUrl" alt="Card Image" class="hover-image">
+            <span class="card-container">
+                <p>{{ card.quantity }} </p>
+
+                <p>{{ card.name }}</p>
+            </span>
+        </li>
+    </ul>
+<!-- <mat-list role="list" class="deck-list">
+    <mat-list-item role="listitem" *ngFor="let card of deck.cards" 
+        (mouseover)="showImage(card)" 
+        (mouseleave)="hideImage()" 
+        (click)="viewCardDetails(card)"
+        >
+        <span class="card-list-container">
+            <p mat-line>{{ card.quantity }}</p>
+            <p mat-line>{{ card.name }}</p>
+        </span>
+        <img *ngIf="hoveredCard===card" [src]="card.card.imageUrl" alt="Card Image" class="hover-image">
+    </mat-list-item>
+</mat-list> -->
+</div>  
