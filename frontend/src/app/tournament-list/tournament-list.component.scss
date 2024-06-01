@@ -1,0 +1,50 @@
+.tournament-list-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.tournament-list-header {
+    width: 100%;
+    padding-top: 20px;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    flex-direction: row;
+    .format-select {
+        margin-right: 20px;
+        max-width: 200px;
+    }
+}
+
+.tournament-list-container {
+    width: 90%;
+    justify-self: center;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+}
+  
+.mat-mdc-row:hover .mat-mdc-cell {
+    border-color: currentColor;
+}
+  
+.mat-column-date {
+    width: 10%;
+    border-right: 1px solid currentColor;
+    padding-right: 24px;
+    text-align: center;
+}
+  

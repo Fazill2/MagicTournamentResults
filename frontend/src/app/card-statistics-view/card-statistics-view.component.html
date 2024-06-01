@@ -6,9 +6,14 @@
                 {{format}}
             </mat-option>
         </mat-select>
-        <mat-select placeholder="Select " [(value)]="selectedTime" class="time-select" (selectionChange)="onTimeChange()">
+        <mat-select placeholder="Select a time scope" [(value)]="selectedTime" class="time-select" (selectionChange)="onTimeChange()">
             <mat-option *ngFor="let time of timeScopes" [value]="time">
                 {{time.label}}
+            </mat-option>
+        </mat-select>
+        <mat-select placeholder="Sideboard" [(value)]="selectedSideboard" class="sideboard-select" (selectionChange)="onSideboardChange()">
+            <mat-option *ngFor="let sideboard of sideboardOptions" [value]="sideboard">
+                {{sideboard.label}}
             </mat-option>
         </mat-select>
     </div>

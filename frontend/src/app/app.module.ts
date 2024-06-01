@@ -23,6 +23,9 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { TournamentListComponent } from './tournament-list/tournament-list.component';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
     DeckDetailsComponent,
     CardDetailsComponent,
     CardStatisticsViewComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    TournamentListComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +54,9 @@ import { SpinnerComponent } from './spinner/spinner.component';
     MatInputModule,
     MatSelectModule,
     MatFormFieldModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatPaginatorModule,
+    ToastrModule.forRoot({positionClass: 'toast-bottom-center'})
   ],
   providers: [],
   bootstrap: [AppComponent]

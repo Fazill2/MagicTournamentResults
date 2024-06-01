@@ -1,3 +1,11 @@
+.tournament-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
 .tournament-details-header {
   padding: 10px;
   text-align: center;
@@ -5,6 +13,12 @@
   justify-content: space-around;
   align-items: center;
   flex-direction: row;
+  width: 80%;
+}
+
+.tournament-table-container {
+  width: 80%;
+  margin-bottom: 20px;
 }
 
 table {
@@ -26,4 +40,16 @@ table {
   border-right: 1px solid currentColor;
   padding-right: 24px;
   text-align: center;
+}
+
+@media screen and (max-width: 850px){
+  .deck-name-container {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 680px){
+  .avg-cmc-container {
+    display: none;
+  }
 }

@@ -55,4 +55,11 @@ export class MagicUtilsService {
     console.log(cost)
     return cost;
   }
+
+  public zeroIfNotNumber(value: any): number {
+    if (isNaN(value)) {
+      return 0;
+    }
+    return value;
+  }
 }

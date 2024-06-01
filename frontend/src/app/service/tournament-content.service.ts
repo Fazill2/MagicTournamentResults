@@ -31,4 +31,9 @@ export class TournamentContentService {
     const queryParams = `?format=${format}&timeScope=${timeScope}&isSideboard=${isSideboard}`;
     return this.http.get('http://localhost:8080/card/getTopCards' + queryParams);
   }
+
+  getTournamentPage(page: number, size: number, format: string) {
+    const queryParams = `?page=${page}&size=${size}&format=${format}`;
+    return this.http.get('http://localhost:8080/tournament/page' + queryParams);
+  }
 }

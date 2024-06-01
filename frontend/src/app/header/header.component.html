@@ -1,7 +1,7 @@
 <mat-toolbar class="app-header">
     <h1>Magic Tournaments Results</h1>
     <button mat-button routerLink="/main-view">Home</button>
-    <button mat-button>Tournaments</button>
+    <button mat-button routerLink="tournament-list">Tournaments</button>
     <button mat-button [matMenuTriggerFor]="menu">Card Stats</button>
     <mat-menu #menu="matMenu">
         <button mat-menu-item *ngFor="let format of cardStats" routerLink="/card-stats" [queryParams]="format.query">

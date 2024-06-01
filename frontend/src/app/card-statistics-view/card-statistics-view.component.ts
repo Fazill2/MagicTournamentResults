@@ -17,11 +17,16 @@ export class CardStatisticsViewComponent implements OnInit {
     { value: 'LAST_90_DAYS', label: 'Last 3 Months' },
     { value: 'LAST_365_DAYS', label: 'Last Year' },
     { value: 'ALL', label: 'All Time' }];
+  sideboardOptions = [
+    { value: false, label: 'Mainboard' },
+    { value: true, label: 'Sideboard' }
+  ];
   format: string = 'Modern';
   timeScope: string = 'ALL';
   isSideboard: boolean = false;
   selectedFormat: string = 'Modern';
   selectedTime: any = this.timeScopes[4];
+  selectedSideboard: any = this.sideboardOptions[0];
 
   constructor(private tournamentContentService: TournamentContentService,
     private route: ActivatedRoute,
@@ -37,6 +42,7 @@ export class CardStatisticsViewComponent implements OnInit {
       this.isSideboard = (params['isSideboard']) ? params['isSideboard'] : this.isSideboard;
       this.selectedFormat = this.format;
       this.selectedTime = this.timeScopes.find((time) => time.value === this.timeScope);
+      this.selectedSideboard = this.sideboardOptions.find((sideboard) => sideboard.value === this.isSideboard);
       this.tournamentContentService.getCardStatistics(this.format, this.timeScope, this.isSideboard).subscribe((data: any) => {
         console.log(data);
         this.cards = data;
