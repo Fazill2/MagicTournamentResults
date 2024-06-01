@@ -4,27 +4,30 @@
 </div>
 <div class="deck-details-info">
     <p>{{deck.place}}</p>
-    <ul class="deck-list">
-        <li *ngFor="let card of deck.cards" (mouseover)="showImage(card)" (mouseleave)="hideImage()" (click)="viewCardDetails(card)" class="deck-list-item">
-            <img *ngIf="hoveredCard===card" [src]="card.card.imageUrl" alt="Card Image" class="hover-image">
-            <span class="card-container">
-                <p>{{ card.quantity }} </p>
-
-                <p>{{ card.name }}</p>
-            </span>
-        </li>
-    </ul>
-<!-- <mat-list role="list" class="deck-list">
-    <mat-list-item role="listitem" *ngFor="let card of deck.cards" 
-        (mouseover)="showImage(card)" 
-        (mouseleave)="hideImage()" 
-        (click)="viewCardDetails(card)"
-        >
-        <span class="card-list-container">
-            <p mat-line>{{ card.quantity }}</p>
-            <p mat-line>{{ card.name }}</p>
-        </span>
-        <img *ngIf="hoveredCard===card" [src]="card.card.imageUrl" alt="Card Image" class="hover-image">
-    </mat-list-item>
-</mat-list> -->
+    <mat-card class="deck-list-card-container">
+        <div class="deck-list-container">
+            <table class="deck-table table-1">
+                <tbody>
+                    <tr *ngFor="let card of tables.table1" class="deck-table-item">
+                            <th colspan="3" class="table-category" *ngIf="card.categoryName" class="deck-table-item-category">{{card.categoryName | titlecase}}</th>
+                            <td *ngIf="!card.categoryName">{{card.quantity}}</td>
+                            <td *ngIf="!card.categoryName" class="deck-table-item-name" (mouseover)="showImage(card, $event)" (mouseleave)="hideImage()" (click)="viewCardDetails(card)">{{card.name}}</td>
+                            <td *ngIf="!card.categoryName" [innerHtml]="card.manaCostIcons"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="deck-table table-2">
+                <tbody>
+                    <tr *ngFor="let card of tables.table2" class="deck-table-item">
+                            <th colspan="3" class="table-category" *ngIf="card.categoryName" class="deck-table-item-category">{{card.categoryName | titlecase}}</th>
+                            <td *ngIf="!card.categoryName">{{card.quantity}}</td>
+                            <td *ngIf="!card.categoryName" class="deck-table-item-name" (mouseover)="showImage(card, $event)" (mouseleave)="hideImage()" (click)="viewCardDetails(card)">{{card.name}}</td>
+                            <td *ngIf="!card.categoryName" [innerHtml]="card.manaCostIcons"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-card>
+    <img *ngIf="hoveredCard" [src]="hoveredCard.card.imageUrl" [style.top.px]="imageTop" [style.left.px]="imageLeft" class="hover-image">
+    
 </div>  
