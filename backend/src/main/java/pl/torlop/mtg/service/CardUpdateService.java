@@ -10,6 +10,7 @@ import pl.torlop.mtg.model.scryfall_api.BulkData;
 import pl.torlop.mtg.model.scryfall_api.BulkDataItem;
 import pl.torlop.mtg.model.scryfall_api.CardItem;
 import pl.torlop.mtg.model.entity.Card;
+import pl.torlop.mtg.service.repository.CardRepositoryService;
 
 import java.net.URL;
 import java.util.Arrays;

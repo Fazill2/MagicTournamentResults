@@ -1,4 +1,4 @@
-package pl.torlop.mtg.service;
+package pl.torlop.mtg.service.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

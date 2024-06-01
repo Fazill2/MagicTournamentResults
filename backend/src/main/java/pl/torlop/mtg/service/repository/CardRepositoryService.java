@@ -1,10 +1,9 @@
-package pl.torlop.mtg.service;
+package pl.torlop.mtg.service.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.torlop.mtg.dao.CardRepository;
 import pl.torlop.mtg.dao.CardStatisticsRepository;
-import pl.torlop.mtg.model.aggregation.CardCount;
 import pl.torlop.mtg.model.entity.Card;
 import pl.torlop.mtg.model.entity.CardStatistics;
 import pl.torlop.mtg.model.entity.Deck;
@@ -16,11 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CardRepositoryService {
     private final CardRepository cardRepository;
-    private final CardStatisticsRepository cardStatisticsRepository;
-
-    public void saveCard(Card card) {
-        cardRepository.save(card);
-    }
 
     public Card getCard(String id) {
         return cardRepository.findById(id).orElse(null);
@@ -44,7 +38,7 @@ public class CardRepositoryService {
         }
     }
 
-    public List<Object[]> getListOfCardCount(Boolean sideboard){
+    public List<Object[]> getListOfCardCount(){
         return cardRepository.getListOfCardCount();
     }
 
@@ -54,13 +48,5 @@ public class CardRepositoryService {
 
     public List<Object[]> getListOfCardCountBetweenDates(LocalDateTime startDate, LocalDateTime endDate){
         return cardRepository.getListOfCardCountBetweenDates(startDate, endDate);
-    }
-
-    public void saveCardStatistics(CardStatistics cardStatistics){
-        cardStatisticsRepository.save(cardStatistics);
-    }
-
-    public void saveAllCardStatistics(List<CardStatistics> cardStatistics){
-        cardStatisticsRepository.saveAll(cardStatistics);
     }
 }

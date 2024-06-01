@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import pl.torlop.mtg.model.scraper.CardScraperModel;
 import pl.torlop.mtg.model.scraper.DeckScraperModel;
 import pl.torlop.mtg.model.scraper.TournamentScraperModel;
+import pl.torlop.mtg.service.repository.TournamentRepositoryService;
 
 import java.io.IOException;
 import java.time.Duration;

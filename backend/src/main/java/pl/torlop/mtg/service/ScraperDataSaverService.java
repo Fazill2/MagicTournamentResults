@@ -8,6 +8,8 @@ import pl.torlop.mtg.model.entity.DeckCard;
 import pl.torlop.mtg.model.entity.Tournament;
 import pl.torlop.mtg.model.scraper.DeckScraperModel;
 import pl.torlop.mtg.model.scraper.TournamentScraperModel;
+import pl.torlop.mtg.service.repository.CardRepositoryService;
+import pl.torlop.mtg.service.repository.TournamentRepositoryService;
 
 import java.time.LocalDateTime;
 import java.util.List;

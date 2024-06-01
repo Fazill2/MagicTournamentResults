@@ -3,11 +3,12 @@ package pl.torlop.mtg.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.torlop.mtg.model.TimeScope;
-import pl.torlop.mtg.model.entity.Card;
 import pl.torlop.mtg.model.entity.CardStatistics;
-import pl.torlop.mtg.model.entity.DeckCard;
+import pl.torlop.mtg.service.repository.CardRepositoryService;
+import pl.torlop.mtg.service.repository.CardStatisticsRepositoryService;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,14 +17,19 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CardStatisticsService {
     private final CardRepositoryService cardRepositoryService;
-    // 1 - card id
-    // 2 - quantity
-    // 3 - avg quantity
-    // 4 - format
-    // 5 - is sideboard
+    private final CardStatisticsRepositoryService cardStatisticsRepositoryService;
 
-    public void generateStatistics(String timeScope){
-        List<Object[]> statistics = cardRepositoryService.getListOfCardCount(true);
+    public void generateStatistics(){
+        cardStatisticsRepositoryService.deleteAllCardStatistics();
+        for (String timeScope : TimeScope.TIME_SCOPES) {
+            generateStatistics(timeScope);
+        }
+    }
+
+    private void generateStatistics(String timeScope){
+        LocalDateTime startDate = getStartDateForTimeScope(timeScope);
+        LocalDateTime endDate = LocalDateTime.now();
+        List<Object[]> statistics = cardRepositoryService.getListOfCardCountBetweenDates(startDate, endDate);
         List<CardStatistics> statisticsList = new ArrayList<>();
         for (Object[] stat : statistics) {
             CardStatistics cardStatistics = new CardStatistics();
@@ -35,6 +41,10 @@ public class CardStatisticsService {
             cardStatistics.setIsSideboard((Boolean) stat[4]);
             statisticsList.add(cardStatistics);
         }
-        cardRepositoryService.saveAllCardStatistics(statisticsList);
+        cardStatisticsRepositoryService.saveAllCardStatistics(statisticsList);
+    }
+
+    public LocalDateTime getStartDateForTimeScope(String timeScope){
+        return TimeScope.getStartDateForTimeScope(timeScope);
     }
 }

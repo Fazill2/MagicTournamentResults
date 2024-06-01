@@ -3,7 +3,7 @@ package pl.torlop.mtg.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.torlop.mtg.model.entity.Deck;
-import pl.torlop.mtg.service.DeckRepositoryService;
+import pl.torlop.mtg.service.repository.DeckRepositoryService;
 import pl.torlop.mtg.service.DeckUtilsService;
 
 @RestController

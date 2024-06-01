@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface CardRepository extends JpaRepository<Card, String> {
     List<Card> findByName(String name);
-    List<Card> findBySet(String set);
     List<Card> findByNameContaining(String name);
 
     @Query(value = "SELECT cards.id, COUNT(deck_cards.quantity), AVG(deck_cards.quantity), tournaments.format, deck_cards.sideboard\n" +
@@ -34,8 +33,6 @@ public interface CardRepository extends JpaRepository<Card, String> {
             "WHERE tournaments.date BETWEEN :startDate AND :endDate\n" +
             "GROUP BY cards.id, tournaments.format, deck_cards.sideboard", nativeQuery = true)
     List<Object[]> getListOfCardCountBetweenDates(LocalDateTime startDate, LocalDateTime endDate);
-
-
 
     @Query("SELECT d FROM Card c JOIN DeckCard dc ON dc.card.id = c.id JOIN Deck d WHERE c.id = :#{#id} AND dc.sideboard = FALSE")
     List<Deck> getDecksByCardId(String id);
