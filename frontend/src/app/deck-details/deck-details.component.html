@@ -29,5 +29,5 @@
         </div>
     </mat-card>
     <img *ngIf="hoveredCard" [src]="hoveredCard.card.imageUrl" [style.top.px]="imageTop" [style.left.px]="imageLeft" class="hover-image">
-    
+    <button mat-button class="export-arena-button" (click)="exportToArena($event)">Export to Arena</button>
 </div>  

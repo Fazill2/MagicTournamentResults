@@ -3,12 +3,8 @@ import { TournamentContentService } from '../service/tournament-content.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import { MagicUtilsService } from '../service/magic-utils.service';
 import { SpinnerService } from '../service/spinner.service';
-
-interface Category {
-  name: string;
-  cards: Array<any>
-}
-
+import {Clipboard} from '@angular/cdk/clipboard';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-deck-details',
@@ -16,15 +12,6 @@ interface Category {
   styleUrls: ['./deck-details.component.scss']
 })
 export class DeckDetailsComponent implements OnInit {
-
-  constructor(
-    private tournamentContentService: TournamentContentService,
-    private route: ActivatedRoute,
-    public magicUtilsService: MagicUtilsService,
-    private router: Router,
-    private spinnerService: SpinnerService
-  ) { }
-
   deck: any = {};
 
   categories = {
@@ -36,6 +23,7 @@ export class DeckDetailsComponent implements OnInit {
     "sorcery": Array<any>(),
     "battle": Array<any>(),
     "land": Array<any>(),
+    "other": Array<any>(),
     "Sideboard": Array<any>(),
   }
 
@@ -43,11 +31,22 @@ export class DeckDetailsComponent implements OnInit {
     table1: Array<any>(),
     table2: Array<any>(),
   }
-  sideboard: Array<any> = [];
-  categoryArray: Array<Category> = [];
   imageTop: number = 0;
   imageLeft: number = 0;
   hoveredCard: any = null;
+
+
+  constructor(
+    private tournamentContentService: TournamentContentService,
+    private route: ActivatedRoute,
+    public magicUtilsService: MagicUtilsService,
+    private router: Router,
+    private spinnerService: SpinnerService,
+    private clipboard: Clipboard,
+    private toastr: ToastrService
+  ) { }
+
+  
 
 
   ngOnInit(): void {
@@ -57,8 +56,9 @@ export class DeckDetailsComponent implements OnInit {
     this.tournamentContentService.getDeckDetails(id).subscribe((data: any) => {
       console.log(data);
       this.deck = data;
-      const length = this.deck.cards.length;
+      const length = this.deck.cards.length + Object.keys(this.categories).length - 1;
       this.deck.cards.forEach((card: any) => {
+        console.log(card.category)
         this.categories[card.category as keyof typeof this.categories].push(card);
       });
       this.prepareDeckList(this.categories, length);
@@ -69,7 +69,6 @@ export class DeckDetailsComponent implements OnInit {
 
   showImage(card: any, event: any): void {
     this.hoveredCard = card;
-    // make sure the image is not out of the screen
     if (event.clientX + 20 + 250 > window.innerWidth) {
       this.imageLeft = event.clientX - 250;
     } else {
@@ -116,5 +115,35 @@ export class DeckDetailsComponent implements OnInit {
     });    
     this.tables.table1 = deckList1;
     this.tables.table2 = deckList2;
+  }
+
+  public exportToArena(event: Event) {
+    let deckList = "Deck\n";
+    this.deck.cards.forEach((card: any) => {
+      if (card.isSideboard) {
+        return;
+      }
+      deckList += card.quantity + " " + card.name + "\n";
+    });
+    deckList += "Sideboard\n";
+    this.categories.Sideboard.forEach((card: any) => {
+      deckList += card.quantity + " " + card.name + "\n";
+    });
+    const pending = this.clipboard.beginCopy(deckList);
+    let remainingAttempts = 3;
+    const attempt = () => {
+      const result = pending.copy();
+      if (!result && --remainingAttempts) {
+        setTimeout(attempt);
+      } else {
+        pending.destroy();
+        if (result) {
+          this.toastr.success('Decklist copied to clipboard');
+        } else {
+          this.toastr.error('Failed to copy decklist to clipboard');
+        }
+      }
+    };
+    attempt();
   }
 }
