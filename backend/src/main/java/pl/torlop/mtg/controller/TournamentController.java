@@ -1,6 +1,7 @@
 package pl.torlop.mtg.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import pl.torlop.mtg.model.entity.Deck;
 import pl.torlop.mtg.model.entity.Tournament;
@@ -21,7 +22,6 @@ public class TournamentController {
     private final CardUpdateService cardUpdateService;
     private final ScraperDataSaverService scraperDataSaverService;
     private final TournamentRepositoryService tournamentRepositoryService;
-    private final CardRepositoryService cardRepositoryService;
     private final ApiUtilsService apiUtilsService;
 
     @GetMapping(path = "/scrapeTest")
@@ -56,6 +56,13 @@ public class TournamentController {
     @GetMapping(path = "/all")
     public List<Tournament> getAllTournaments() {
         return apiUtilsService.getTournamentApiModels(tournamentRepositoryService.getTournaments(), false, false);
+    }
+
+    @GetMapping(path = "/page")
+    public Page<Tournament> getTournamentsPage(@RequestParam(required = false) String format,
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "0") int size) {
+        return tournamentRepositoryService.getTournamentsByFormat(format, page, size);
     }
 
     @GetMapping(path = "/listDecks")
