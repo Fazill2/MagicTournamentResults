@@ -4,6 +4,7 @@ import { MainViewComponent } from './main-view/main-view.component';
 import { TournamentDetailsComponent } from './tournament-details/tournament-details.component';
 import { DeckDetailsComponent } from './deck-details/deck-details.component';
 import { CardDetailsComponent } from './card-details/card-details.component';
+import { CardStatisticsViewComponent } from './card-statistics-view/card-statistics-view.component';
 
 const routes: Routes = [
   // Add this line to the routes array
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'tournament-details/:id', component: TournamentDetailsComponent },
   { path: 'deck-details/:id', component: DeckDetailsComponent },
   { path: 'card-details/:id', component: CardDetailsComponent },
+  { path: 'card-stats', component: CardStatisticsViewComponent },
   { path: '**', redirectTo: '/main-view' }
 ];
 

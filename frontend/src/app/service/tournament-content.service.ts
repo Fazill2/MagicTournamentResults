@@ -26,4 +26,9 @@ export class TournamentContentService {
     const queryParams = `?id=${id}`;
     return this.http.get('http://localhost:8080/card/details' + queryParams);
   }
+
+  getCardStatistics(format: string, timeScope: string, isSideboard: boolean) {
+    const queryParams = `?format=${format}&timeScope=${timeScope}&isSideboard=${isSideboard}`;
+    return this.http.get('http://localhost:8080/card/getTopCards' + queryParams);
+  }
 }

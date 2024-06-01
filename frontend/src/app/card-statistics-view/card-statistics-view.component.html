@@ -1,0 +1,28 @@
+<div class="card-stats-main">
+    <h2 class="cart-stats-title">Top Cards</h2>
+    <div class="card-stats-header">
+        <mat-select placeholder="Select a format"  [(value)]="selectedFormat" class="format-select" (selectionChange)="onFormatChange()">
+            <mat-option *ngFor="let format of formats" [value]="format">
+                {{format}}
+            </mat-option>
+        </mat-select>
+        <mat-select placeholder="Select " [(value)]="selectedTime" class="time-select" (selectionChange)="onTimeChange()">
+            <mat-option *ngFor="let time of timeScopes" [value]="time">
+                {{time.label}}
+            </mat-option>
+        </mat-select>
+    </div>
+    <div class="card-stats-container">
+        <div class="card-stats-grid-view">
+            <mat-card class="card-stats-card" *ngFor="let card of cards" (click)="navigateToCardDetails(card)">
+                <mat-card-content>
+                    <img [src]="card.card.imageUrl" alt={{card.card.name}} class="card-image"/>   
+                </mat-card-content>
+                <mat-card-footer class="card-stats-card-footer">
+                    <p>Number of decks: {{card.count}}</p>
+                    <p>Average Quantity: {{card.average_quantity  | number}}</p>
+                </mat-card-footer>
+            </mat-card>
+        </div>
+    </div>
+</div>

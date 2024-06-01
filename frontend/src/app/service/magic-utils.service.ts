@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class MagicUtilsService {
+  private regex = /\{(.*?)\}/g; 
+
   private colorIcons = {
     "W": '<i class="ms ms-w ms-cost ms-shadow"></i>',
     "U": '<i class="ms ms-u ms-cost ms-shadow"></i>',
@@ -12,6 +14,11 @@ export class MagicUtilsService {
     "G": '<i class="ms ms-g ms-cost ms-shadow"></i>',
     'C': '<i class="ms ms-c ms-cost ms-shadow"></i>'
   };
+
+  private icon = {
+    start: '<i class="ms ms-',
+    end: ' ms-cost ms-shadow"></i>'
+  }
 
   constructor() { }
 
@@ -28,5 +35,24 @@ export class MagicUtilsService {
       }
     }
     return color;
+  }
+
+  public getManaCostIcons(manaCost: string): string {
+    let cost = "";
+    console.log(manaCost)
+    if (manaCost === undefined || manaCost === null || manaCost === "") {
+      return "";
+    }
+    manaCost = manaCost.split(' ')[0];
+    const matches = manaCost.match(this.regex);
+    if (matches) {
+      matches.forEach((match) => {
+        let c = match.replace('{', '').replace('}', '');
+        c = c.replace('/', '');
+        cost += this.icon.start + c.toLowerCase() + this.icon.end;
+      });
+    }
+    console.log(cost)
+    return cost;
   }
 }

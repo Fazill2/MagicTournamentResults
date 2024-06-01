@@ -2,9 +2,10 @@
     <h1>Magic Tournaments Results</h1>
     <button mat-button routerLink="/main-view">Home</button>
     <button mat-button>Tournaments</button>
-    <button mat-button [matMenuTriggerFor]="menu">Cards</button>
+    <button mat-button [matMenuTriggerFor]="menu">Card Stats</button>
     <mat-menu #menu="matMenu">
-        <button mat-menu-item>Modern</button>
-        <button mat-menu-item>Pauper</button>
+        <button mat-menu-item *ngFor="let format of cardStats" routerLink="/card-stats" [queryParams]="format.query">
+            {{format.label}}
+        </button>
     </mat-menu>
  </mat-toolbar>

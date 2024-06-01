@@ -1,3 +1,4 @@
+import { query } from '@angular/animations';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-
+  cardStats = [
+    { label: 'Modern', query: { format: 'Modern' } },
+    { label: 'Standard', query: { format: 'Standard' } },
+    { label: 'Pioneer', query: { format: 'Pioneer' } },
+    { label: 'Pauper', query: { format: 'Pauper' } },
+    { label: 'Legacy', query: { format: 'Legacy' } },
+    { label: 'Vintage', query: { format: 'Vintage' } }
+  ]
 }

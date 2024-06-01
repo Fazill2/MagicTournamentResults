@@ -17,6 +17,12 @@ import { DeckDetailsComponent } from './deck-details/deck-details.component';
 import { CardDetailsComponent } from './card-details/card-details.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { CardStatisticsViewComponent } from './card-statistics-view/card-statistics-view.component';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +31,9 @@ import {MatGridListModule} from '@angular/material/grid-list';
     TournamentDetailsComponent,
     HeaderComponent,
     DeckDetailsComponent,
-    CardDetailsComponent
+    CardDetailsComponent,
+    CardStatisticsViewComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +46,11 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatToolbarModule,
     MatTableModule,
     MatCardModule,
-    MatGridListModule
+    MatGridListModule,
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
