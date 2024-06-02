@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.torlop.mtg.dao.TournamentRepository;
+import pl.torlop.mtg.model.dto.TournamentDto;
 import pl.torlop.mtg.model.entity.Deck;
 import pl.torlop.mtg.model.entity.Tournament;
 import org.springframework.data.domain.Page;
@@ -55,11 +56,7 @@ public class TournamentRepositoryService {
         } else {
             tournamentPage = tournamentRepository.findAllByFormatOrderByDateDesc(format, pageable);
         }
-        List<Tournament> tournaments = tournamentPage.getContent().stream()
-                .peek(tournament -> {
-                    tournament.setDecks(null);
-                })
-                .toList();
-        return new PageImpl<>(tournaments, pageable, tournamentPage.getTotalElements());
+        return tournamentPage;
+//        return new PageImpl<>(tournaments, pageable, tournamentPage.getTotalElements());
     }
 }
