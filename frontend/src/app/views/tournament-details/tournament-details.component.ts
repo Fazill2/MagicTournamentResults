@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TournamentContentService } from '../service/tournament-content.service';
+import { TournamentContentService } from '../../service/tournament-content.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MagicUtilsService } from '../service/magic-utils.service';
+import { MagicUtilsService } from '../../service/magic-utils.service';
 
 @Component({
   selector: 'app-tournament-details',
@@ -12,14 +12,14 @@ export class TournamentDetailsComponent implements OnInit{
   tournament: any;
 
   displayedColumns: string[] = ['place', 'player', 'name', 'colors', 'averageCMC'];
-  
+
   constructor(
     private tournamentContentService: TournamentContentService,
     private route: ActivatedRoute,
     public magicUtilsService: MagicUtilsService,
     private router: Router
   ) { }
-  
+
   ngOnInit(): void {
     const routeParams = this.route.snapshot.paramMap;
     const id = Number(routeParams.get('id'));

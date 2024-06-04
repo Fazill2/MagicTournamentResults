@@ -1,11 +1,24 @@
 <mat-toolbar class="app-header">
     <h1>Magic Tournaments Results</h1>
-    <button mat-button routerLink="/main-view">Home</button>
-    <button mat-button routerLink="tournament-list">Tournaments</button>
-    <button mat-button [matMenuTriggerFor]="menu">Card Stats</button>
+    <div class="nav-buttons">
+        <button mat-button routerLink="/main-view">Home</button>
+        <button mat-button routerLink="tournament-list">Tournaments</button>
+        <button mat-button [matMenuTriggerFor]="menu">Card Stats</button>
+    </div>
+
+    <button mat-icon-button [matMenuTriggerFor]="mobileMenu" class="hamburger-menu">
+        <mat-icon>menu</mat-icon>
+    </button>
+    
     <mat-menu #menu="matMenu">
         <button mat-menu-item *ngFor="let format of cardStats" routerLink="/card-stats" [queryParams]="format.query">
             {{format.label}}
         </button>
     </mat-menu>
+
+    <mat-menu #mobileMenu="matMenu">
+        <button mat-menu-item routerLink="/main-view">Home</button>
+        <button mat-menu-item routerLink="/tournament-list">Tournaments</button>
+        <button mat-menu-item [matMenuTriggerFor]="menu">Card Stats</button>
+      </mat-menu>
  </mat-toolbar>

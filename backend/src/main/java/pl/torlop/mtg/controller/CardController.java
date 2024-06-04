@@ -30,7 +30,7 @@ public class CardController {
 
     @GetMapping(path = "/getTopCards")
     public List<CardStatistics> getTopCards(@RequestParam String format, @RequestParam String timeScope, @RequestParam boolean isSideboard){
-        return cardStatisticsRepositoryService.getTop50CardsByFormatAndTimeScopeAndIsSideboard(format, timeScope, isSideboard);
+        return cardStatisticsRepositoryService.getTopCardsByFormatAndTimeScopeAndIsSideboard(format, timeScope, isSideboard, 50);
     }
 
     @GetMapping(path = "/updateStats")
@@ -41,5 +41,10 @@ public class CardController {
     @GetMapping(path = "/decks")
     public List<Deck> getDecksByCardId(@RequestParam String id){
         return cardRepositoryService.getDecksByCardId(id);
+    }
+
+    @GetMapping(path="/getTop3Cards")
+    public List<CardStatistics> getTop3Cards(@RequestParam String format, @RequestParam String timeScope,  @RequestParam(defaultValue = "false") boolean isSideboard){
+        return cardStatisticsRepositoryService.getTopCardsByFormatAndTimeScopeAndIsSideboard(format, timeScope, isSideboard, 3);
     }
 }

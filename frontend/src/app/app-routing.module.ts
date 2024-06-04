@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainViewComponent } from './main-view/main-view.component';
-import { TournamentDetailsComponent } from './tournament-details/tournament-details.component';
-import { DeckDetailsComponent } from './deck-details/deck-details.component';
-import { CardDetailsComponent } from './card-details/card-details.component';
-import { CardStatisticsViewComponent } from './card-statistics-view/card-statistics-view.component';
-import { TournamentListComponent } from './tournament-list/tournament-list.component';
+import { MainViewComponent } from './views/main-view/main-view.component';
+import { TournamentDetailsComponent } from './views/tournament-details/tournament-details.component';
+import { DeckDetailsComponent } from './views/deck-details/deck-details.component';
+import { CardDetailsComponent } from './views/card-details/card-details.component';
+import { CardStatisticsViewComponent } from './views/card-statistics-view/card-statistics-view.component';
+import { TournamentListComponent } from './views/tournament-list/tournament-list.component';
 
 const routes: Routes = [
   // Add this line to the routes array

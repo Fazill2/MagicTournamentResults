@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TournamentContentService } from '../service/tournament-content.service';
+import { TournamentContentService } from '../../service/tournament-content.service';
 import { Router } from '@angular/router';
 
 @Component({

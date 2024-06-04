@@ -6,3 +6,19 @@
     align-items: center;
     flex-direction: row;
 }
+
+.hamburger-menu {
+    display: none;
+  }
+  
+.nav-buttons {
+    display: flex;
+}
+@media (max-width: 600px) {
+    .nav-buttons {
+        display: none;
+    }
+    .hamburger-menu {
+        display: block;
+    }
+}

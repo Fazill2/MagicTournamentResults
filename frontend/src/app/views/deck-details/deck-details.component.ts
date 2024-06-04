@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TournamentContentService } from '../service/tournament-content.service';
+import { TournamentContentService } from '../../service/tournament-content.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MagicUtilsService } from '../service/magic-utils.service';
-import { SpinnerService } from '../service/spinner.service';
+import { MagicUtilsService } from '../../service/magic-utils.service';
+import { SpinnerService } from '../../service/spinner.service';
 import {Clipboard} from '@angular/cdk/clipboard';
 import { ToastrService } from 'ngx-toastr';
 
@@ -46,7 +46,7 @@ export class DeckDetailsComponent implements OnInit {
     private toastr: ToastrService
   ) { }
 
-  
+
 
 
   ngOnInit(): void {
@@ -64,7 +64,7 @@ export class DeckDetailsComponent implements OnInit {
       this.prepareDeckList(this.categories, length);
       this.spinnerService.hide();
     });
-    
+
   }
 
   showImage(card: any, event: any): void {
@@ -112,7 +112,7 @@ export class DeckDetailsComponent implements OnInit {
           deckList2.push(card);
         }
       });
-    });    
+    });
     this.tables.table1 = deckList1;
     this.tables.table2 = deckList2;
   }

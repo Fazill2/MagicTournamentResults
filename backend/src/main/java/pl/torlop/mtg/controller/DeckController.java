@@ -2,9 +2,13 @@ package pl.torlop.mtg.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import pl.torlop.mtg.model.dto.DeckDto;
 import pl.torlop.mtg.model.entity.Deck;
+import pl.torlop.mtg.service.ApiUtilsService;
 import pl.torlop.mtg.service.repository.DeckRepositoryService;
 import pl.torlop.mtg.service.DeckUtilsService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/deck")
@@ -13,6 +17,7 @@ import pl.torlop.mtg.service.DeckUtilsService;
 public class DeckController {
     private final DeckUtilsService deckUtilsService;
     private final DeckRepositoryService deckRepositoryService;
+    private final ApiUtilsService apiUtilsService;
 
     @GetMapping(path = "/color/{id}")
     public String getDeckColor(@PathVariable Long id) {
@@ -23,5 +28,10 @@ public class DeckController {
     @GetMapping(path = "/details")
     public Deck getDeckDetails(@RequestParam Long id) {
         return deckRepositoryService.getDeck(id);
+    }
+
+    @GetMapping(path="/getDecksForCard")
+    public List<DeckDto> getDecksForCard(@RequestParam String cardId){
+        return apiUtilsService.getDecksApiModel(deckRepositoryService.getDecksWithCard(cardId), false);
     }
 }

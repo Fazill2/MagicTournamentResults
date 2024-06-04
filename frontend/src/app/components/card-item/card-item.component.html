@@ -1,0 +1,9 @@
+<mat-card class="card-stats-card"  (click)="navigateToCardDetails(card)">
+    <mat-card-content>
+        <img [src]="card.card.imageUrl" alt={{card.card.name}} class="card-image" loading="lazy"/>   
+    </mat-card-content>
+    <mat-card-footer class="card-stats-card-footer">
+        <p>Number of decks: {{card.count}}</p>
+        <p>Average Quantity: {{card.average_quantity  | number}}</p>
+    </mat-card-footer>
+</mat-card>

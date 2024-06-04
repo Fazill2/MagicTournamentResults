@@ -1,0 +1,11 @@
+<div class="tournament-main">
+  <div class="tournament-details-header">
+      <h3>{{tournament.name}}</h3>
+      <p>{{tournament.players}} players</p>
+      <p>Format: {{tournament.format}}</p>
+  </div>
+  <div class="tournament-table-container">
+    <app-deck-table [decks]="tournament.decks" 
+    [getColorIconsForDeck]="getColorIconsForDeck.bind(this)" [viewDeckDetails]="viewDeckDetails.bind(this)"/>
+  </div>
+</div>

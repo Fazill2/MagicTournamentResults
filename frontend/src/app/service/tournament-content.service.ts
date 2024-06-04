@@ -36,4 +36,15 @@ export class TournamentContentService {
     const queryParams = `?page=${page}&size=${size}&format=${format}`;
     return this.http.get('http://localhost:8080/tournament/page' + queryParams);
   }
+
+  getRecentDecksWithCard(cardId: string){
+    const queryParams = `?cardId=${cardId}`;
+    return this.http.get("http://localhost:8080/deck/getDecksForCard" + queryParams);
+  }
+
+  getTop3CardsForFormat(format: string, timeScope: string){
+    const queryParams = `?format=${format}&timeScope=${timeScope}`;
+
+    return this.http.get("http://localhost:8080/card/getTop3Cards" + queryParams);
+  }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TournamentContentService } from '../service/tournament-content.service';
+import { TournamentContentService } from '../../service/tournament-content.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SpinnerService } from '../service/spinner.service';
+import { SpinnerService } from '../../service/spinner.service';
 
 @Component({
   selector: 'app-card-statistics-view',
@@ -12,8 +12,8 @@ export class CardStatisticsViewComponent implements OnInit {
   cards: Array<any> = [];
   formats = ['Modern', 'Standard', 'Pioneer', 'Pauper', 'Legacy', 'Vintage'];
   timeScopes = [
-    { value: 'LAST_7_DAYS', label: 'Last Week' }, 
-    { value: 'LAST_30_DAYS', label: 'Last Month' }, 
+    { value: 'LAST_7_DAYS', label: 'Last Week' },
+    { value: 'LAST_30_DAYS', label: 'Last Month' },
     { value: 'LAST_90_DAYS', label: 'Last 3 Months' },
     { value: 'LAST_365_DAYS', label: 'Last Year' },
     { value: 'ALL', label: 'All Time' }];

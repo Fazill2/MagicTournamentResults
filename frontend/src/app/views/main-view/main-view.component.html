@@ -1,0 +1,34 @@
+<div class="main-view-main-div">
+    <div class="display-grid" >
+        <div class="recent-tournaments-tile"> 
+            <mat-card class="recent-tournaments-card">
+                <mat-card-header>
+                    <mat-card-title>Recent Tournaments</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-list role="list">
+                        <mat-list-item role="listitem" class="recent-tournament-listitem" *ngFor="let tournament of tournaments" (click)="viewTournamentDetails(tournament.id)">
+                            <p mat-line>{{ tournament.name }}</p>
+                            <p mat-line>{{ tournament.playerCount }}</p>    
+                        </mat-list-item>
+                    </mat-list>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="top-cards-tile">
+            <mat-card class="top-cards">
+                <mat-card-header class="top-cards-header">
+                    <mat-card-title>Recent Top Cards</mat-card-title>
+                    <mat-select placeholder="Select a format"  [(value)]="selectedFormat" class="format-select" (selectionChange)="onFormatChange()">
+                        <mat-option *ngFor="let format of formats" [value]="format">
+                            {{format}}
+                        </mat-option>
+                    </mat-select>
+                </mat-card-header>
+                <mat-card-content class="top-cards-content">
+                    <app-card-item *ngFor="let card of cards" [card]="card" [navigateToCardDetails]="navigateToCardDetails.bind(this)" class="small-card-item"></app-card-item>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

@@ -24,9 +24,7 @@ public class CardStatisticsRepositoryService {
         cardStatisticsRepository.deleteAll();
     }
 
-    public List<CardStatistics> getTop50CardsByFormatAndTimeScopeAndIsSideboard(String format, String timeScope, boolean isSideboard){
-        return cardStatisticsRepository.getTop50CardsByFormatAndTimeScopeAndIsSideboard(format, timeScope, isSideboard);
+    public List<CardStatistics> getTopCardsByFormatAndTimeScopeAndIsSideboard(String format, String timeScope, boolean isSideboard, int limit){
+        return cardStatisticsRepository.getTopCardsByFormatAndTimeScopeAndIsSideboard(format, timeScope, isSideboard, limit);
     }
-
-
 }

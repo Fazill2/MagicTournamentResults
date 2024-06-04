@@ -31,4 +31,8 @@ public class DeckRepositoryService {
     public void clearDatabase() {
         deckRepository.deleteAll();
     }
+
+    public List<Deck> getDecksWithCard(String cardId){
+        return deckRepository.getDecksWithCard(cardId);
+    }
 }
