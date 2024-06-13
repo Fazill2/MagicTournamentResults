@@ -51,6 +51,6 @@ public class DeckUtilsService {
             sum += deckCard.getCard().getCmc() * deckCard.getQuantity();
             count += deckCard.getQuantity();
         }
-        return sum / count;
+        return sum / (count == 0 ? 1 : count);
     }
 }
