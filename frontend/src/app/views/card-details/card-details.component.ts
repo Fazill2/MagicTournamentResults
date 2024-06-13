@@ -16,25 +16,35 @@ export class CardDetailsComponent implements OnInit {
     private router: Router
   ) { }
 
-  card: any;
+  card: any = {};
   decks: any;
 
   ngOnInit(): void {
-    const routeParams = this.route.snapshot.paramMap;
-    const id = routeParams.get('id');
-    if (!id) {
-      return;
-    }
-
-    this.tournamentContentService.getCardDetails(id).subscribe((data: any) => {
-      console.log(data);
-      this.card = data;
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      if (!id) {
+        return;
+      }
+      this.tournamentContentService.getCardDetails(id).subscribe((data: any) => {
+        console.log(data);
+        this.card = data;
+      });
+  
+      this.tournamentContentService.getRecentDecksWithCard(id).subscribe((data: any) => {
+        console.log(data);
+        this.decks = data;
+      })
     });
 
-    this.tournamentContentService.getRecentDecksWithCard(id).subscribe((data: any) => {
-      console.log(data);
-      this.decks = data;
-    })
+    // this.tournamentContentService.getCardDetails(id).subscribe((data: any) => {
+    //   console.log(data);
+    //   this.card = data;
+    // });
+
+    // this.tournamentContentService.getRecentDecksWithCard(id).subscribe((data: any) => {
+    //   console.log(data);
+    //   this.decks = data;
+    // })
   }
 
   getColorIconsForDeck(deck: any) {

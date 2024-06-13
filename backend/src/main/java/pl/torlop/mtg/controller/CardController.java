@@ -47,4 +47,9 @@ public class CardController {
     public List<CardStatistics> getTop3Cards(@RequestParam String format, @RequestParam String timeScope,  @RequestParam(defaultValue = "false") boolean isSideboard){
         return cardStatisticsRepositoryService.getTopCardsByFormatAndTimeScopeAndIsSideboard(format, timeScope, isSideboard, 3);
     }
+
+    @GetMapping(path="/getAutoCompleteOptions")
+    public List<Card> getAutocomplete(@RequestParam String name){
+        return cardRepositoryService.getAutocomplete(name);
+    }
 }

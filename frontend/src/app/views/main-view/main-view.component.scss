@@ -34,7 +34,6 @@
 .top-cards-tile {
     padding: 20px;
     margin: 20px 0px 20px 0px;
-    width: 100%;
 }
 
 .top-cards {
@@ -50,6 +49,10 @@
 
 }
 
+.small-card-item {
+    min-width: 200px;
+}
+
 .top-cards-header {
     width: 100%;
     padding-top: 20px;
@@ -63,6 +66,19 @@
     mat-select {
         margin-left: 20px;
         max-width: 200px;
+    }
+}
+
+
+@media screen and (max-width: 1200px){
+    .top-cards-content {
+        flex-direction: column;
+    }
+    .small-card-item {
+        max-width: 300px;
+    }
+    .top-cards-header {
+        flex-direction: column;
     }
 }
 

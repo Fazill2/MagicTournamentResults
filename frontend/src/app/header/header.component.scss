@@ -1,3 +1,6 @@
+@use '@angular/material' as mat;
+@include mat.core();
+
 .app-header {
     padding: 10px;
     text-align: center;
@@ -5,6 +8,39 @@
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
+}
+
+.search-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+}
+
+.search-bar {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+}
+//     height: 40px;
+//     .mat-mdc-form-field-infix {
+//         height: 0px !important;
+//         padding: 0px !important;
+//         min-width: none !important;
+//     }
+//     .search-input {
+//         width: 100%;
+//         font-size: 16px;
+//     }
+// }
+
+.search-bar {
+    .mat-form-
+    .mat-input-element {
+        height: 30px;
+    }
+
 }
 
 .hamburger-menu {

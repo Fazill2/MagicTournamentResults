@@ -67,7 +67,7 @@ public class MTGOTournamentScraperService implements TournamentScraperService {
                     Thread.sleep(millis);
                 } catch (InterruptedException ignored) {
                 }
-                TournamentScraperModel tournament = scrapeTournament(element, beginDate, endDate);
+                TournamentScraperModel tournament = scrapeTournament(element);
                 if (tournament != null) {
                     tournaments.add(tournament);
                 }
@@ -81,7 +81,7 @@ public class MTGOTournamentScraperService implements TournamentScraperService {
         }
     }
 
-    public TournamentScraperModel scrapeTournament(Element element, LocalDateTime beginDate, LocalDateTime endDate) {
+    public TournamentScraperModel scrapeTournament(Element element) {
         try {
             Element linkElement = element.selectFirst("a.decklists-link");
             if (linkElement == null) {

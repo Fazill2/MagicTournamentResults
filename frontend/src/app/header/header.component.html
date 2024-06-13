@@ -1,10 +1,25 @@
 <mat-toolbar class="app-header">
     <h1>Magic Tournaments Results</h1>
+
+    <div class="search-container">
+        <mat-form-field class="search-bar" appearance="outline">
+            <!-- <mat-label>Search</mat-label> -->
+            <input type="search" class="search-input" matInput [formControl]="searchControl" [matAutocomplete]="auto" placeholder="Search for a card...">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{ option.name }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+
     <div class="nav-buttons">
         <button mat-button routerLink="/main-view">Home</button>
         <button mat-button routerLink="tournament-list">Tournaments</button>
         <button mat-button [matMenuTriggerFor]="menu">Card Stats</button>
     </div>
+
+   
 
     <button mat-icon-button [matMenuTriggerFor]="mobileMenu" class="hamburger-menu">
         <mat-icon>menu</mat-icon>

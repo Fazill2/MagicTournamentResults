@@ -49,4 +49,8 @@ public class CardRepositoryService {
     public List<Object[]> getListOfCardCountBetweenDates(LocalDateTime startDate, LocalDateTime endDate){
         return cardRepository.getListOfCardCountBetweenDates(startDate, endDate);
     }
+
+    public List<Card> getAutocomplete(String name){
+        return cardRepository.findByNameContainingIgnoreCaseOrderByName(name);
+    }
 }

@@ -29,6 +29,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { DeckTableComponent } from './components/deck-table/deck-table.component';
 import { CardItemComponent } from './components/card-item/card-item.component';
 import {MatIconModule} from '@angular/material/icon';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatFormField} from '@angular/material/form-field';
+import {ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -62,7 +65,9 @@ import {MatIconModule} from '@angular/material/icon';
     MatProgressSpinnerModule,
     MatPaginatorModule,
     ToastrModule.forRoot({positionClass: 'toast-bottom-center'}),
-    MatIconModule
+    MatIconModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

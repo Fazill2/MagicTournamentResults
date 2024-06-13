@@ -11,6 +11,7 @@ import java.util.List;
 public interface CardRepository extends JpaRepository<Card, String> {
     List<Card> findByName(String name);
     List<Card> findByNameContaining(String name);
+    List<Card> findByNameContainingIgnoreCaseOrderByName(String name);
 
     @Query(value = "SELECT cards.id, COUNT(deck_cards.quantity), AVG(deck_cards.quantity), tournaments.format, deck_cards.sideboard\n" +
             "FROM cards\n" +

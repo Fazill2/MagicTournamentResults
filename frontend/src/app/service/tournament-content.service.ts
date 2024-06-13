@@ -47,4 +47,9 @@ export class TournamentContentService {
 
     return this.http.get("http://localhost:8080/card/getTop3Cards" + queryParams);
   }
+
+  getAutoCompleteOptions(name: string){
+    const queryParams = `?name=${name}`;
+    return this.http.get<any[]>("http://localhost:8080/card/getAutoCompleteOptions" + queryParams);
+  }
 }

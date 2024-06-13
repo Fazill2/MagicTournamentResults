@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ApiUtilsService {
+public class EntityToApiModelService {
     public Page<TournamentDto> getTournamentDtoPage(Page<Tournament> tournamentPage) {
         List<TournamentDto> tournamentDtos = getTournamentApiModels(tournamentPage.getContent(), false, false);
         return new PageImpl<>(tournamentDtos, tournamentPage.getPageable(), tournamentPage.getTotalElements());
