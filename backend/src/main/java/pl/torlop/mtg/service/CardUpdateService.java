@@ -1,8 +1,8 @@
 package pl.torlop.mtg.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,6 +12,7 @@ import pl.torlop.mtg.model.scryfall_api.CardItem;
 import pl.torlop.mtg.model.entity.Card;
 import pl.torlop.mtg.service.repository.CardRepositoryService;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -19,49 +20,56 @@ import java.util.Objects;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CardUpdateService {
 
     @Value("${scryfall.bulk.url}")
     private String cardUpdateUrl;
 
-    @Autowired
-    private CardRepositoryService cardRepositoryService;
-
-    public void updateCards() {
-        RestTemplate restTemplate = new RestTemplate();
-        BulkData bulkData = restTemplate.getForObject(cardUpdateUrl, BulkData.class);
-        if (bulkData == null) {
-            return;
+    public List<Card> getOracleCards(){
+        String fileDownloadUrl = getBulkDataDownloadUri(cardUpdateUrl);
+        if (fileDownloadUrl == null) {
+            log.error("Error while updating cards: fileDownloadUrl is null");
+            return null;
         }
 
+        try {
+            List<CardItem> cardItems = getCardItemsFromUrl(fileDownloadUrl);
+            return getCardsFromCardList(cardItems);
+        } catch (Exception e) {
+            log.error("Error while updating cards", e);
+            return null;
+        }
+    }
+
+
+    public String getBulkDataDownloadUri(String url) {
+        RestTemplate restTemplate = new RestTemplate();
+        BulkData bulkData = restTemplate.getForObject(url, BulkData.class);
+        if (bulkData == null) {
+            return null;
+        }
         BulkDataItem oracleCards = bulkData.getData().stream()
                 .filter(bulkDataItem -> bulkDataItem.getType().equals("oracle_cards"))
                 .toList().get(0);
+        return oracleCards.getDownload_uri();
+    }
 
-        try {
-            // wait between requests to avoid 429 error
-            Thread.sleep(1000);
-        } catch (InterruptedException ignored) {
-        }
-        String fileDownloadUrl = oracleCards.getDownload_uri();
+    public List<CardItem> getCardItemsFromUrl(String fileDownloadUrl) throws IOException {
+        URL url = new URL(fileDownloadUrl);
+        ObjectMapper objectMapper = new ObjectMapper();
+        return Arrays.asList(objectMapper.readValue(url, CardItem[].class));
+    }
 
-        try {
-            URL url = new URL(fileDownloadUrl);
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<CardItem> cardItems = Arrays.asList(objectMapper.readValue(url, CardItem[].class));
+    private List<Card> getCardsFromCardList(List<CardItem> cardItems) throws IOException {
 
-            List<Card> cardEntities = cardItems.stream()
-                    .filter(cardItem -> Objects.equals(cardItem.getObject(), "card")
-                            && !cardItem.layout.equals("token") && !cardItem.layout.equals("art_series")
-                            && !cardItem.layout.equals("double_faced_token")
-                                && isCardLegalAnywhere(cardItem) && !cardItem.set_type.equals("memorabilia"))
-                    .map(this::createCardEntityFromCardItem).toList();
+        return cardItems.stream()
+                .filter(cardItem -> Objects.equals(cardItem.getObject(), "card")
+                        && !cardItem.layout.equals("token") && !cardItem.layout.equals("art_series")
+                        && !cardItem.layout.equals("double_faced_token")
+                        && isCardLegalAnywhere(cardItem) && !cardItem.set_type.equals("memorabilia"))
+                .map(this::createCardEntityFromCardItem).toList();
 
-            cardRepositoryService.saveAll(cardEntities);
-            log.info("Cards updated {}", cardEntities.size());
-        } catch (Exception e) {
-            log.error("Error while updating cards", e);
-        }
     }
 
     public Boolean isCardLegalAnywhere(CardItem card) {
@@ -95,6 +103,4 @@ public class CardUpdateService {
 
         return card;
     }
-
-
 }

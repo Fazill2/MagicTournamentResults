@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import pl.torlop.mtg.model.entity.Card;
 import pl.torlop.mtg.service.CardStatisticsService;
 import pl.torlop.mtg.service.CardUpdateService;
 import pl.torlop.mtg.service.ScraperDataSaverService;
 import pl.torlop.mtg.service.TournamentScraperService;
+import pl.torlop.mtg.service.repository.CardRepositoryService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,11 +22,14 @@ public class ScheduledJobs {
     private final List<TournamentScraperService> tournamentScraperServices;
     private final ScraperDataSaverService scraperDataSaverService;
     private final CardStatisticsService cardStatisticsService;
+    private final CardRepositoryService cardRepositoryService;
 
     @Scheduled(cron = "0 0 0 * * *")
     public void updateCardsDaily() {
         log.info("[Updating cards]");
-        cardUpdateService.updateCards();
+        List<Card> cardEntities = cardUpdateService.getOracleCards();
+
+        cardRepositoryService.saveAll(cardEntities);
     }
 
 
