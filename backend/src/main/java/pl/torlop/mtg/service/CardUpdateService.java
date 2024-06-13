@@ -26,6 +26,10 @@ public class CardUpdateService {
     @Value("${scryfall.bulk.url}")
     private String cardUpdateUrl;
 
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+
     public List<Card> getOracleCards(){
         String fileDownloadUrl = getBulkDataDownloadUri(cardUpdateUrl);
         if (fileDownloadUrl == null) {
@@ -44,7 +48,6 @@ public class CardUpdateService {
 
 
     public String getBulkDataDownloadUri(String url) {
-        RestTemplate restTemplate = new RestTemplate();
         BulkData bulkData = restTemplate.getForObject(url, BulkData.class);
         if (bulkData == null) {
             return null;
@@ -57,11 +60,11 @@ public class CardUpdateService {
 
     public List<CardItem> getCardItemsFromUrl(String fileDownloadUrl) throws IOException {
         URL url = new URL(fileDownloadUrl);
-        ObjectMapper objectMapper = new ObjectMapper();
+
         return Arrays.asList(objectMapper.readValue(url, CardItem[].class));
     }
 
-    private List<Card> getCardsFromCardList(List<CardItem> cardItems) throws IOException {
+    private List<Card> getCardsFromCardList(List<CardItem> cardItems) {
 
         return cardItems.stream()
                 .filter(cardItem -> Objects.equals(cardItem.getObject(), "card")
