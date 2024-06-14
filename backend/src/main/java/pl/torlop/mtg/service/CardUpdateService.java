@@ -64,7 +64,7 @@ public class CardUpdateService {
         return Arrays.asList(objectMapper.readValue(url, CardItem[].class));
     }
 
-    private List<Card> getCardsFromCardList(List<CardItem> cardItems) {
+    public List<Card> getCardsFromCardList(List<CardItem> cardItems) {
 
         return cardItems.stream()
                 .filter(cardItem -> Objects.equals(cardItem.getObject(), "card")
@@ -77,7 +77,7 @@ public class CardUpdateService {
 
     public Boolean isCardLegalAnywhere(CardItem card) {
         String[] legalities = card.getLegalities().values();
-        return  Arrays.stream(legalities).anyMatch(legality -> !legality.equals("not_legal"));
+        return  Arrays.stream(legalities).anyMatch(legality -> legality != null && !legality.equals("not_legal"));
     }
 
     public Card createCardEntityFromCardItem(CardItem cardItem) {
